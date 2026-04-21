@@ -184,9 +184,8 @@ void lda_project(
         double *y_row = Y + (i * k);
         for (int kk = 0; kk < k; kk++) {
             double s = 0.0;
-            const double *w_col = W + kk;  /* W is d×k, column-major access */
             for (int j = 0; j < d; j++) {
-                s += x_row[j] * w_col[j * k];
+                s += x_row[j] * W[j * k + kk];
             }
             y_row[kk] = s;
         }
