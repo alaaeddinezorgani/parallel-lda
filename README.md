@@ -18,9 +18,14 @@ Dataset: HAR Smartphones (10 299 × 561 features, 6 classes).
 ├── bonus/                  # GPU implementation (CUDA) — optional +15%
 ├── data/
 │   └── download.sh         # Kaggle dataset download script
-├── lda_hpc.ipynb           # Jupyter notebook — orchestrator & visualisation
+├── lda_hpc.py              # Jupyter notebook source (jupytext percent format)
+├── lda_cuda_comparison.py  # Jupyter notebook source (jupytext percent format)
+├── Makefile                # Builds C libs + notebooks
 └── README.md
 ```
+
+> **Note:** `.ipynb` files are not committed — they are rebuilt from `.py` sources
+> via `make notebooks` (using [jupytext](https://jupytext.readthedocs.io/)).
 
 ---
 
@@ -43,14 +48,18 @@ export CC=gcc-13   # or whatever version brew installed
 ## Compile
 
 ```bash
-# Serial shared library
-make -C serial
+# Build C libraries + regenerate notebooks
+make
 
-# Parallel shared library (OpenMP)
-make -C parallel
+# Or just notebooks
+make notebooks
+
+# Or just C libraries
+make serial
+make parallel
 ```
 
-Both produce `.so` files loaded by the notebook via ctypes.
+Both C targets produce `.so` files loaded by the notebook via ctypes.
 
 ---
 
@@ -70,6 +79,10 @@ and place `train.csv` and `test.csv` in the `data/` folder.
 ## Run
 
 ```bash
+# Regenerate notebooks from .py sources (if not already done)
+make notebooks
+
+# Open the notebook
 jupyter notebook lda_hpc.ipynb
 ```
 
